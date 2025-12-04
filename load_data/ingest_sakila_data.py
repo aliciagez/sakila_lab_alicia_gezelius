@@ -2,11 +2,11 @@ import dlt
 from dlt.sources.sql_database import sql_database
 from pathlib import Path 
 
-path_sakila_data = Path(__file__).parent[1] / "sakila" 
+path_sakila_data = Path(__file__).parent.parent / "sakila" 
 sqlite_path = path_sakila_data / "sqlite-sakila.db"
 duckdb_path = path_sakila_data / "sakila.duckdb"
 
-source = sql_database(f"sqlite:///{sqlite_path}", schema="main")
+source = sql_database(credentials=f"sqlite:///{sqlite_path}", schema="main")
 
 pipline = dlt.pipeline(
     pipeline_name="sakila_duckdb",
@@ -15,3 +15,5 @@ pipline = dlt.pipeline(
 )
 
 load_database = pipline.run(source, write_disposition="replace")
+
+print(load_database)
